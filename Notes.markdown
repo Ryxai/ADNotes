@@ -80,12 +80,12 @@ Domain and forest functional levels are important.
 Domain functional level is based on the OS version on the domain controller.
 
 Each system allows for multiple domain levels available and the domain 
-functional level is dependent on the loest domain functional level.
+functional level is dependent on the lowest domain functional level.
 
-Using a lower functional levle prevents the use of new features. Old domain 
+Using a lower functional level prevents the use of new features. Old domain 
 functional levels are sometimes useful in future proofing against
 organizational changes that may introduce older domain controllers. Need to
-think preventitively about future changes and whether the features introducted
+think preventively about future changes and whether the features introduced
 by new functional levels are important enough. 
 
 Forest functional levels refer to the functional level of all domains in the
@@ -93,11 +93,11 @@ forest and falls to the lowest version of the domain functional levels in the
 forest.
 
 Domain/forest functional level are manually changed not enforced automatically
- by the domain controller/domains in their respective spheres.jA
+ by the domain controller/domains in their respective spheres.
 
 Raising functional levels is not easily reversible.
 
-Trusts are tools that allow users from differnet domains to interact.
+Trusts are tools that allow users from different domains to interact.
 
 Trust directions are 1/2 way. Access is given in the opposite direction
 in which the trust is granted.
@@ -110,21 +110,21 @@ Transitive trusts are created between parent and child domains, implicitly.
 
 Tree roots have transitive trusts with the forest root.
 
-All domains in a forest trust all other domains in the forst.
+All domains in a forest trust all other domains in the forest.
 
-External trusts ar used for NT domains or when domains in two separate 
+External trusts are used for NT domains or when domains in two separate 
 forests need to trust one another but not the entire forests. 
 
-Exsternal trusts are non transitive.
+External trusts are non transitive.
 
 Sid filtering is a protection enabled by default, for external trusts. 
 
-Trusts are subsceptible to replay attacks.
+Trusts are susceptible to replay attacks.
 
 Sid: Domain + Relative id.
 
 Sid history is the explicit past of a user who has migrated domains. Useful 
-to ensure users dont lose access to old resources. 
+to ensure users don't lose access to old resources. 
 
 Sid filtering ignores sid history.
 
@@ -158,7 +158,7 @@ Win Server main prereq.
 Other prereqs:
 1. NTFS volume (enables file/folder permissions)
 2. TCPIP settings are configured properly, changing later is a problem.
-   DC should have a static IP addres.
+   DC should have a static IP address.
 3. Setting the DNS server, required for AD.
 4. AD Prep (used to be required for old AD). AD prep is used to prepare the
    AD for a new environment. 2012 R2 automatically runs all commands assuming
@@ -174,7 +174,7 @@ Server manager: add role + configure AD.
 Requires choosing the AD role then adding features required for active 
 directories.
 
-Core DC would not require GUI featues.
+Core DC would not require GUI features.
 Choose Active Directory Directory Services is the role to choose.
 
 Once the role is configured select promote this server to a DC to launch the 
@@ -182,7 +182,7 @@ configuration wizard.
 
 DCpromo is the former AD configuration wizard, its deprecated.
 
-Notifications is the alternat eway to launch the configuration wizard.
+Notifications is the alternate way to launch the configuration wizard.
 
 1. Must choose the level of modification of domain: parent/forest/add existing.
 2. Then pick DFL/FFL and at least 1 global catalog service.
@@ -221,14 +221,14 @@ The server will be needed to added to the server manager.
 Adding a server to the domain makes it very easily to manage it remotely 
 before configuring it.
 
-Remote configuration requires logging in as enterpise admin.
+Remote configuration requires logging in as enterprise admin.
 
 Fault tolerance for installing DNS on all DCs is a good policy.
 
 DSRM passwords are local, and can be different if needed.
 
 Install from media uses NDFSUtil to create a IFM backup that can be pushed to
-extractable physcial media.
+extractable physical media.
 
 Install from media requires the path. It will make a copy. Replication is not 
 perfect as any changes since the backup need to be done (will be done
