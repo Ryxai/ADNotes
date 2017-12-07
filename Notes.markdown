@@ -1,4 +1,4 @@
-# Active Directory
+GG Active Directory
 Active directory is very scalable.
 
 ## Active Directory Components
@@ -299,4 +299,64 @@ Accounts for pcs on other domains still exist while creating a new DC for a
 new domain.
 
 AD domains and trusts MMC can be used to manage and view trusts.
+
+## Read Only Domain Controllers
+
+RODC prevents small branch offices from causing configuration errors in the
+DC structure as its shared across all the domains. Physical security also 
+is a primary use case.
+
+RODC cannot have any changes made locally. RODC has no passwords in the
+database.
+
+Password caching allows the users who need the RODC rather than the entire 
+domain's passwords.
+
+Prereqs:
+1. FFL 2003
+2. One writable DC with 2008.
+
+Make sure records are cleared in DNS when removing DCs from the domain. 
+
+Removing a DC should include removing the account from the network to prevent
+name collision.
+
+AD Users and Computers -> Precreate RODC.
+
+DNS/GC/RODC can create a lot of traffic if GC is enabled.
+
+Delegation of RODC administration and Installation is to allow an account at
+the branch office to be used to finish the RODC installation and to be 
+used for recovery purposes if need be. Prevents the necessity of having to add
+them as a domain admin and give to many permissions. Should specify a group 
+instead of a specific user.
+
+Server needs to be unjoined from the domain. 
+
+During the configuration the user specified would login.
+
+By preconfiguring the RODC it prepopulates the configuration wizard.
+
+Important to decide which passwords are cached. If the password isn't cached, 
+then the request is forwarded to another DC.
+
+The first time a cached password user logs on they need access to the full DC
+over WAN.
+
+Password replication password policy is where caching is decided.
+
+The Denied RODC Password Replication Group is a master group of all admins or
+more users that can added who would not be cached on any RODC.
+
+Advanced options shows passwords that are cached on the RODC and who has been
+authenticated from the RODC but not cached.
+
+Prepopulation can be used to allow authentication if the WAN is down at the 
+RODC and the password would be cached locally, unless policy prohibits it. 
+
+Using the MMC sometimes may be confusing if you attempt to connect to the RODC
+and can still create users/groups. Make sure that the MMC is pointing to the 
+RODC.
+
+## AD Virtualization
 
