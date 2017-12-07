@@ -152,7 +152,6 @@ Any of the default trusts and their transitivity can be modified.
 ## Installing AD
 
 Prerequisites are important for AD.
-P
 
 Win Server main prereq.
 
@@ -239,7 +238,7 @@ Specify source allows the user to pick a domain controller they want to
 get a copy of the database from.
 
 Using ntdsutil:
-```
+``` powershell
 > ntdsutil: activate instance ntds
 Active instance set to "ntds".
 > ntdsutil: ifm
@@ -248,7 +247,7 @@ Active instance set to "ntds".
 
 Installing the role Core
 
-```
+``` powershell
 > add-windowsFeature -Name ad-domain-services
 ```
 
@@ -267,14 +266,14 @@ Install-ADDSDomainController `
 ```
 
 Invoking the script
-```
+``` powershell
 Invoke-Command -ComputerName $name $path
 ```
 
 Server Core much more secure and has smaller resource footprint.
 
 Adding a new domain script
-```
+``` powershell
 Import-Module ADDSDeployment
 Install-ADDSDomain`
 -NoGlobalCatalog: $false `
