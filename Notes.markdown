@@ -360,3 +360,155 @@ RODC.
 
 ## AD Virtualization
 
+Ad virtualization is difficult as multiple DCs tried to coordinate and relative
+IDs.
+
+Virtualization was not the problem but snapshot behavior was. 2012/2012 R2 are
+virtualization aware.
+
+There are best practices to follow.
+
+Disadvantadges:
+1. Single points of failure when using virtualization.
+
+Use a virtualized DC but also have a physical DC as well. 
+
+Consider making the host not part of the domain.
+
+Be security conscious about the physcial host.
+
+The VM host should only host VMs, separation of concerns.
+
+Do not use snapshots for DCs.
+
+2012 R2 can use snapshots but best practice is to not use them.
+
+DCs need to be time synchronized, and don't synchronize with the host machine.
+
+Cloning can be used to prep a DC to be cloned for virtualization and rolling 
+them out quickly. 
+
+Requirements for cloning:
+1. Running 2012 or later.
+2. Virtualized.
+3. Virtualization platform has to support virtualization generation ID.
+4. PC emulation has to be available to the clonee and cloners.
+
+**Returning to the topic later**
+
+## Organizational Units
+
+OUs are designed to organize items in the database. Think folders for 
+documents.
+
+OUs allow for specified permissions and delegate them. 
+
+Group policies are affected by OUs and can be applied to OUs.
+
+The icons for OUs have small books. The ones that do not are legacy from 
+the NT and cannot be used to create OUs, link policy or delegate permissions.
+
+Several containers are built-in. 
+
+Built-in containers:
+1. Builtin: Accounts created when AD activated.
+2. Computers: New computer accounts. 
+3. ForeignSecurityPrincipals: Any secuirty principal not part of AD.
+4. Managed Service Accounts: Accounts windows handles changing the password
+for.
+5. Users: Important accounts and built-in groups and default location for new
+accounts.
+
+Domain Controller OU is the only one precreated which has some special group
+policies linked to it.
+
+OU organization is preferential. Often linked to groups/sites. Higher level
+OUs should have more group policies linked to them. 
+
+2-3 levels is the max depth recommended by Microsoft.
+
+OUs make group policy application much more effective.
+
+Sub-dividing OUs and thinking about the layout ahead of time is important for
+establishing the domain in the first place.
+
+Effective naming is important. If spaces are used delimited spaces are required
+for powershell.
+
+The advanced view has options that enables protection from deletion for OUs. 
+
+Using the MMC just click on the OU you want to create a new OU in.
+
+MMCs need to be refreshed.
+
+Setting up a new OU from powershell
+
+``` powershell
+    > New-ADOrganizationalUnit `
+    -Name "" ` #Name of OU
+    -Path "" ` #dc/ou (domain controller) = OU/Domain order is bottom to top.
+    -ProtectedFromAccidentalDeletion #Marks it protected or not default true
+```
+Get-help is like man pages for Powershell.
+
+OUs can be set to default for creation.
+
+``` command-prompt
+> redircmp "ou/dc path"#
+> redirusers "path"
+````
+
+Distinguished Path for OU is "ou=x, ou=x_1, .. dc=bld, .. dc=tld"
+
+## User Accounts
+
+User accounts are important for security, enables auditing.
+
+Security principal are entities that can have permissions. SID is assigned to 
+the identifier: includes domain identifier and the relative identifier.
+
+Relative identifiers are never reused (nonces).
+
+Determine which OU we want to create the OU in.
+
+Then presented with a form and attributes to fill in. 
+
+UPN is the user principal name: user@domain. Cannot have duplication with ULN.
+
+User login name (netbios\user).
+
+Then password and set when the password expires.
+
+When accounts are created, disable them ahead of time as a best practice to 
+enable them as the user is onboarded.
+
+Shared accounts/kiosks should enable user cannot change password.
+
+Powershell allows for user creation, good for automation. Use import csv.
+``` powershell
+import-csv path | foreach {New-ADUser `
+-GivenName $_.GivenName `
+-Surname $_.Surname `
+-Name $_.Name `
+-SamAccountName $_.SamAccountName `
+-Department $_.Department `
+-Path $_.Path -Enabled $True `
+-AccountPassword (ConvertTo-SecureString $_Password -AsPlainText -force) `
+-ChangePasswordAtLogon $True}
+```
+
+Fill in as many attributes on the User account as makes sense organizationally.
+
+Set-ADUser can be used to modify accounts.
+
+Dynamic access control can use account proprerties to filter access to 
+resources.
+
+Advanced view enables security permissions over the user account and attribute
+editor etc.
+
+Using a disabling OU for people who have left the company is a best practice.
+
+Unlock/disable is done from the account properties.
+
+Right click in the MMC can be used to reset password or disabling the account.
